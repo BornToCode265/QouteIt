@@ -1,0 +1,74 @@
+Product name : Qoute IT
+
+Database Schema Design
+1. Users Table
+Stores information about system users (Project Managers and Shop Owners).
+
+Column Name	Data Type	Description
+user_id	INT (PK, AUTO)	Unique identifier for the user.
+name	VARCHAR(100)	Name of the user.
+email	VARCHAR(100)	Email address of the user.
+password_hash	VARCHAR(255)	Password hash for user authentication.
+phone_number	VARCHAR(15)	User's contact number.
+role	ENUM('manager', 'owner')	Specifies the user's role in the system.
+created_at	TIMESTAMP	Timestamp when the user account was created.
+
+2. Shops Table
+Stores details about shops in the system.
+
+Column Name	Data Type	Description
+shop_id	INT (PK, AUTO)	Unique identifier for the shop.
+owner_id	INT (FK)	Foreign key to the user_id in Users (owner).
+shop_name	VARCHAR(100)	Name of the shop.
+location_area	VARCHAR(100)	Area name of the shop's location.
+latitude	DECIMAL(9,6)	Latitude of the shop's location (Google Maps).
+longitude	DECIMAL(9,6)	Longitude of the shop's location (Google Maps).
+created_at	TIMESTAMP	Timestamp when the shop was added.
+
+3. Products Table
+Stores product details available in various shops.
+
+Column Name	Data Type	Description
+product_id	INT (PK, AUTO)	Unique identifier for the product.
+shop_id	INT (FK)	Foreign key to shop_id in Shops.
+name	VARCHAR(100)	Product name.
+description	TEXT	Detailed product description.
+photo_url	VARCHAR(255)	URL to the product's image.
+price_per_unit	DECIMAL(10,2)	Price per unit of the product.
+quantity	INT	Quantity available in stock.
+created_at	TIMESTAMP	Timestamp when the product was added.
+
+4. Requests Table
+Tracks requests made by project managers.
+
+Column Name	Data Type	Description
+request_id	INT (PK, AUTO)	Unique identifier for the request.
+manager_id	INT (FK)	Foreign key to user_id in Users.
+item_name	VARCHAR(100)	Name of the item being requested.
+quantity	INT	Quantity of the item being requested.
+created_at	TIMESTAMP	Timestamp when the request was created.
+
+5. Quotations Table
+Stores quotation details for each request.
+
+Column Name	Data Type	Description
+quote_id	INT (PK, AUTO)	Unique identifier for the quotation.
+request_id	INT (FK)	Foreign key to request_id in Requests.
+shop_id	INT (FK)	Foreign key to shop_id in Shops.
+product_id	INT (FK)	Foreign key to product_id in Products.
+price_per_unit	DECIMAL(10,2)	Price per unit offered in the quotation.
+total_price	DECIMAL(10,2)	Total price = price_per_unit × quantity.
+created_at	TIMESTAMP	Timestamp when the quotation was added.
+
+6. Payments Table
+Tracks payment details for completed transactions.
+
+Column Name	Data Type	Description
+payment_id	INT (PK, AUTO)	Unique identifier for the payment.
+quote_id	INT (FK)	Foreign key to quote_id in Quotations.
+amount	DECIMAL(10,2)	Total amount paid.
+payment_date	TIMESTAMP	Date and time when the payment was made.
+receipt_url	VARCHAR(255)	URL to the generated receipt.
+SQL Script
+Below is the PHP script using PDO to create the database, tables, and insert sample data:
+
