@@ -10,12 +10,15 @@ class ShopAPI {
     }
 
     // Register a new shop owner
-    public function registerShopOwner($name, $email, $password) {
+    public function registerShopOwner($name, $email, $password, $district, $area) {
         try {
+            $role = "owner";
+
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            
-            $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password, role,address_id) VALUES (?, ?, ?)");
-            $stmt->execute([$name, $email, $hashedPassword]);
+            $stmt = $this->pdo->prepare("INSERT INTO user_address (address_id, )")
+
+            $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password, role,address_id) VALUES (?,?, ?, ?,?,?)");
+            $stmt->execute([$name, $email, $hashedPassword, ]);
             return ['status' => 'success', 'message' => 'Shop owner registered successfully'];
         } catch (Exception $e) {
             return ['status' => 'error', 'message' => $e->getMessage()];
